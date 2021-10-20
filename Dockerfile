@@ -8,7 +8,7 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm install nodemon --save
+RUN npm install nodemon -g
 
 COPY . .
 
