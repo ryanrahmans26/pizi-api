@@ -67,7 +67,7 @@ exports.createUser = async (req, res) => {
     try {
         let newUser = await User.create({
             username,
-            password,
+            password
         })
 
         const token = jwt.sign(
@@ -78,7 +78,7 @@ exports.createUser = async (req, res) => {
             }
         )
 
-        newUser.token = token
+        newUser.update({token: token})
 
         return res.send({
             message: 'Success',

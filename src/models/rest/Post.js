@@ -21,12 +21,11 @@ const post = (sequelize, DataTypes) => {
         }
     );
 
-
     post.associate = function(models) {
         models.post.belongsTo(models.user, {as: 'user', foreignKey: 'user_id'})
     }
     
-    post.sync();
+    // post.sync();
     return post;
 };
 

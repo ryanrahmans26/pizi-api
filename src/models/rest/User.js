@@ -27,7 +27,7 @@ const user = (sequelize, DataTypes) => {
         models.user.hasMany(models.post, {as: 'user', foreignKey: 'user_id'})
     }
 
-    user.sync();
+    // user.sync();
     return user;
 };
 
