@@ -114,6 +114,20 @@ exports.updateUser = async (req, res) => {
     }
 
     try {
+        let userExists = await User.findOne({
+            where: {
+                username: username
+            }
+        })
+
+        if (userExists) {
+            return res.status(400).send({
+                message: `A user with username ${username} already exists`,
+                code: '400',
+                data: []
+            })    
+        }
+
         if (username) {
             user.username = username
         }
@@ -121,12 +135,15 @@ exports.updateUser = async (req, res) => {
             user.password = password
         }
         user.save()
-
+    
+        
         return res.send({
             message: `User ${id} has been updated`,
             code: '200',
             data: []
         })
+        
+        
     } catch(err) {
         return res.status(500).send( {
             message: `Error ${err.message}`,

@@ -16,17 +16,23 @@ exports.login = async (req, res) => {
     }
 
     try {
-        let user = await User.findOne({username})
+        let user = await User.findOne({
+            where: {
+                username: username
+            }
+        })
 
         if (user === null) {
             return res.status(400).send( {
-                message: `User with Username ${username} not already exists`,
+                message: `User with username ${username} not already exists`,
                 code: '400',
                 data: []
             })
         }
 
-        if (user && compare(password, user.password)) {
+        
+
+        if (user && password === user.password) {
             const token = jwt.sign(
                 {user_id: user.id, username},
                 process.env.TOKEN_KEY,
