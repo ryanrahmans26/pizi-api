@@ -39,8 +39,8 @@ services:
       - DB_NAME=$DB_NAME
       - DB_PORT=$DB_PORT
     volumes:
-      - .:/home/node/app
-      - /home/node/app/node_modules/
+      - .:/usr/src/app
+      - /usr/src/app/node_modules/
     networks:
       - node
 
