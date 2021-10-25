@@ -1,5 +1,5 @@
-const post = (sequelize, DataTypes) => {
-    const post = sequelize.define('post', {
+const product = (sequelize, DataTypes) => {
+    const product = sequelize.define('product', {
             id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
@@ -8,12 +8,16 @@ const post = (sequelize, DataTypes) => {
             user_id: {
                 type: DataTypes.INTEGER,
             },
-            body: {
+            title: {
+                type: DataTypes.TEXT,
+            },
+            description: {
                 type: DataTypes.TEXT,
             },
             photo: {
                 type: DataTypes.STRING,
             }
+            
         },
         {
             timestamps: true,
@@ -21,12 +25,12 @@ const post = (sequelize, DataTypes) => {
         }
     );
 
-    post.associate = function(models) {
-        models.post.belongsTo(models.user, {as: 'user', foreignKey: 'user_id'})
+    product.associate = function(models) {
+        models.product.belongsTo(models.user, {as: 'user', foreignKey: 'user_id'})
     }
     
     // post.sync();
-    return post;
+    return product;
 };
 
-export default post
+export default product

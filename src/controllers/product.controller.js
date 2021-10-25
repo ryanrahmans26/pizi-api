@@ -1,13 +1,14 @@
 const db = require('../models')
 const User = db.rest.models.user
-const Post = db.rest.models.post
+const Product = db.rest.models.product
 const path = require("path")
 const fs = require("fs")
+const { title } = require('process')
 const baseUrl = "http://localhost:4000/uploads/"
 
-exports.getAllPost = async (req, res) => {
+exports.getAllProduct = async (req, res) => {
 
-    const post = await Post.findAll({
+    const product = await Product.findAll({
         include:[
             {
                 model: User,
@@ -19,14 +20,14 @@ exports.getAllPost = async (req, res) => {
     return res.send({
         message: 'Success',
         code: '200',
-        data: post
+        data: product
     })
 }
 
-exports.getPost = async (req, res) => {
+exports.getProduct = async (req, res) => {
     const {id} = req.params
 
-    const post = await Post.findOne({
+    const product = await Product.findOne({
         where: {
             id
         },
@@ -38,9 +39,9 @@ exports.getPost = async (req, res) => {
         ],
     })
 
-    if (!post) {
+    if (!product) {
         return res.status(400).send( {
-            message: `No post found with the ${id}`,
+            message: `No product found with the ${id}`,
             code: '400',
             data: []
         })
@@ -49,16 +50,16 @@ exports.getPost = async (req, res) => {
     return res.send({
         message: 'Success',
         code: '200',
-        data: post
+        data: product
     })
 }
 
-exports.createPost = async (req, res) => {
-    const {body, file} = req.body
+exports.createProduct = async (req, res) => {
+    const {title, description, file} = req.body
 
-    if (!body) {
+    if (!title || !description) {
         return res.status(400).send( {
-            message: `You need include body to create a post`,
+            message: `You need include body and description to create a product`,
             code: '400',
             data: []
         })
@@ -75,15 +76,16 @@ exports.createPost = async (req, res) => {
             })
         }
 
-        let newPost = await Post.create({
+        let newProduct = await Product.create({
             user_id: req.user.user_id,
-            body: body,
+            title: title,
+            description: description,
             photo: encodeURI(baseUrl + req.file.filename)
         })
 
-        const post = await Post.findOne({
+        const product = await Product.findOne({
             where: {
-                id: newPost.id
+                id: newProduct.id
             },
             include:[
                 {
@@ -96,7 +98,7 @@ exports.createPost = async (req, res) => {
         return res.send({
             message: 'Success',
             code: '200',
-            data: post
+            data: product
         })
 
         
@@ -115,20 +117,20 @@ exports.createPost = async (req, res) => {
     }
 }
 
-exports.updatePost = async (req, res) => {
-    const {body} = req.body
+exports.updateProduct = async (req, res) => {
+    const {title, description} = req.body
 
     const {id} = req.params
 
-    const post = await Post.findOne({
+    const product = await Product.findOne({
         where: {
             id
         }
     })
 
-    if (!post) {
+    if (!product) {
         return res.status(400).send( {
-            message: `No exists post with id ${id}`,
+            message: `No exists product with id ${id}`,
             code: '400',
             data: []
         })
@@ -145,18 +147,21 @@ exports.updatePost = async (req, res) => {
             })
         }
 
-        if (body) {
-            post.body = body
+        if (title) {
+            product.title = title
+        }
+        if (description) {
+            product.description = description
         }
         if (req.file) {
-            post.photo = encodeURI(baseUrl + req.file.filename)
+            product.photo = encodeURI(baseUrl + req.file.filename)
         }
-        post.save()
+        product.save()
 
         return res.send({
-            message: `Post with ${id} has been updated`,
+            message: `Product with ${id} has been updated`,
             code: '200',
-            data: []
+            data: product
         })
     } catch(err) {
         return res.status(500).send( {
@@ -167,45 +172,45 @@ exports.updatePost = async (req, res) => {
     }
 }
 
-exports.deletePost = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
     const {id} = req.params
 
     if(!id) {
         return res.status(400).send( {
-            message: `Please provide the ID the post you want to delete`,
+            message: `Please provide the ID the product you want to delete`,
             code: '400',
             data: []
         }) 
     }
 
-    const post = await Post.findOne({
+    const product = await Product.findOne({
         where: {
             id
         }
     })
 
-    if (!post) {
+    if (!product) {
         return res.status(400).send( {
-            message: `No exists post with id ${id}`,
+            message: `No exists product with id ${id}`,
             code: '400',
             data: []
         })
     }
 
     try {
-        await post.destroy()
+        await product.destroy()
 
-        fs.unlink(decodeURI(__basedir + "/uploads/" + path.parse(post.photo).base), function(err) {
+        fs.unlink(decodeURI(__basedir + "/uploads/" + path.parse(product.photo).base), function(err) {
             if (err) {
                 console.log(err)
                 return res.send({
-                    message: `Error delete photo, but succes delete post with id ${post.id}`,
+                    message: `Error delete photo, but succes delete product with id ${product.id}`,
                     code: '200',
                     data: []
                 })
             } else {
                 return res.send({
-                    message: `Post id ${id} has been deleted`,
+                    message: `Product id ${id} has been deleted`,
                     code: '200',
                     data: []
                 })

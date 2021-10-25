@@ -1,9 +1,9 @@
 import user from './user'
-import post from './post'
+import product from './product'
 import auth from './auth'
 
 export default {
     user,
-    post,
+    product,
     auth
 }

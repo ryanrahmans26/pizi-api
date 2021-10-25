@@ -24,7 +24,7 @@ const user = (sequelize, DataTypes) => {
     );
 
     user.associate = function(models) {
-        models.user.hasMany(models.post, {as: 'user', foreignKey: 'user_id'})
+        models.user.hasMany(models.product, {as: 'user', foreignKey: 'user_id'})
     }
 
     // user.sync();

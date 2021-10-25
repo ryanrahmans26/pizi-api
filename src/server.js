@@ -12,16 +12,16 @@ const app = express()
 
 global.__basedir = __dirname;
 
-var corsOptions = {
-    origin: "http://localhost:3000"
-};
+// var corsOptions = {
+//     origin: "http://localhost:3000"
+// };
 
 const accessLogStream = fs.createWriteStream(
     path.join(__dirname, '../access.log'),
     { flags: 'a'}
 )
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(helmet())
 app.use(morgan('combined', { stream: accessLogStream}))
 app.use(express.json({limit: '50mb'}))
@@ -29,7 +29,7 @@ app.use(express.urlencoded({extended: true, limit: '50mb'}))
 
 app.use('/uploads', express.static(__basedir + '/uploads'))
 app.use('/user', routes.user)
-app.use('/post', verifyToken, routes.post)
+app.use('/product', verifyToken, routes.product)
 app.use('/auth', routes.auth)
 
 app.use((req, res) => {
