@@ -1,3 +1,4 @@
+require('dotenv/config')
 const db = require('../models')
 const User = db.rest.models.user
 const Product = db.rest.models.product
