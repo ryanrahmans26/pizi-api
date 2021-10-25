@@ -4,7 +4,7 @@ const Product = db.rest.models.product
 const path = require("path")
 const fs = require("fs")
 const { title } = require('process')
-const baseUrl = "http://localhost:4000/uploads/"
+const baseUrl = `http://localhost:${process.env.PORT}/uploads/`
 
 exports.getAllProduct = async (req, res) => {
 
