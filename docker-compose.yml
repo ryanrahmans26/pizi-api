@@ -74,10 +74,6 @@ volumes:
   certbot-var:
   web-root:
     driver: local
-    driver_opts:
-      type: none
-      device: /home/ubuntu/pizi-api/views/
-      o: bind
 
 networks:
   app-network:
