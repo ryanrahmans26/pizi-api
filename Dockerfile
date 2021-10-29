@@ -13,6 +13,7 @@ RUN npm install pm2 -g
 COPY . ./
 
 RUN chmod +x ./wait-for-it.sh ./docker-entrypoint.sh
+#RUN chmod +x docker-compose/mysql
 
 EXPOSE 8080
 

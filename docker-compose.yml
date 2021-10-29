@@ -8,14 +8,17 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - "3307:3306"
+      - "3307:$DB_PORT"
     environment:
       MYSQL_DATABASE: $DB_NAME
       MYSQL_ROOT_PASSWORD: $DB_PASS
     volumes:
     # This for init a table
     #- ./docker-compose/mysql:/docker-entrypoint-initdb.d
-      - ./docker-compose/mysql:/var/lib/mysql
+    # Persistent mysql data on host machine
+    #- ./docker-compose/mysql:/var/lib/mysql
+    # Persistent mysql data using docker volume
+      - dbdata:/var/lib/mysql
     stdin_open: true
     tty: true
     networks:
@@ -81,6 +84,9 @@ services:
 #       device: /home/ubuntu/pizi-api/views/
 #       o: bind
 
+volumes:
+  dbdata:
+  
 networks:
   app-network:
     driver: bridge

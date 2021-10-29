@@ -8,10 +8,7 @@ module.exports = {
                 password: process.env.DB_PASS,
                 host: process.env.DB_HOST,
                 port: process.env.DB_PORT,
-                dialect: 'mysql',
-                dialectOptions: {
-                    socketPath: "/var/run/mysqld/mysqld.sock"
-                },
+                dialect: 'mysql'
             }
         }
     },
@@ -23,10 +20,7 @@ module.exports = {
                 password: process.env.DB_PASS,
                 host: process.env.DB_HOST,
                 port: process.env.DB_PORT,
-                dialect: 'mysql',
-                dialectOptions: {
-                    socketPath: "/var/run/mysqld/mysqld.sock"
-                },
+                dialect: 'mysql'
             }
         }
     },
