@@ -120,12 +120,14 @@ exports.updateUser = async (req, res) => {
             }
         })
 
-        if (userExists) {
-            return res.status(400).send({
-                message: `A user with username ${username} already exists`,
-                code: '400',
-                data: []
-            })    
+        if (userExists.username !== username) {
+            if (userExists) {
+                return res.status(400).send({
+                    message: `A user with username ${username} already exists`,
+                    code: '400',
+                    data: []
+                })    
+            }
         }
 
         if (username) {
